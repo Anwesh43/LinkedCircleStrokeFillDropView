@@ -177,4 +177,27 @@ class CircleStrokeFillDropView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : CircleStrokeFillDropView) {
+
+        private val animator : Animator = Animator(view)
+        private val cfsd : CircleStrokeFillDrop = CircleStrokeFillDrop(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            cfsd.draw(canvas, paint)
+            animator.animate {
+                cfsd.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            cfsd.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
